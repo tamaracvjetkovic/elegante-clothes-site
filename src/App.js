@@ -1,25 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import MainLogo from './components/MainLogo';
+import { useState, useEffect } from 'react';
+import useFetch from './hooks/useFetch';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+  const { data: blogs, loaded, error } = useFetch("http://localhost:8000/blogs");
+
+  if (loaded) {
+    return (
+      <div className = "App">
+        <Navbar/>
+        <MainLogo/>
+        <Home blogs = { blogs } />
+      </div> 
+    );
+  } else if (error) {
+      return (
+        <div> { error } </div>
+      );
+    } else {
+    return (
+      <div style = {{ fontSize: "40px", display: "flex", backgroundColor: "#cbc163", height: "100vh", alignItems: "center", justifyContent: "center" }}> Loading... </div> 
+    );
+  }
 }
 
+
 export default App;
+
+
+
+
+
